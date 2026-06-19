@@ -1,0 +1,6 @@
+{
+  "name": "Brandon Sanderson Book Timeline",
+  "description": "An interactive, beautifully animated full-scope chronological timeline of Brandon Sanderson's published and forthcoming books with series filters, reading orders, and kinetic grouping animations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
