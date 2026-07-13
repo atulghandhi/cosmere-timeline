@@ -6,6 +6,8 @@ export interface Book {
   year: number;
   description: string;
   isReleased: boolean;
+  /** Release timing is unknown; `year` is only a rough estimate used for ordering. */
+  tbd?: boolean;
   recommendedOrderSeq?: number;
   goodreadsRating?: number;
   cosmere?: boolean;

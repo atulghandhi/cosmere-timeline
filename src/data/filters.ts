@@ -25,7 +25,11 @@ export const SERIES_FILTERS: SeriesFilter[] = [
   { id: 'elantris', label: 'Elantris', test: bySeries('Elantris') },
   { id: 'warbreaker', label: 'Warbreaker', test: (b) => b.id === 'warbreaker' },
   { id: 'white-sand', label: 'White Sand', test: bySeries('White Sand') },
-  { id: 'skyward', label: 'Skyward (Cytoverse)', test: bySeries('Skyward') },
+  {
+    id: 'skyward',
+    label: 'Skyward (Cytoverse)',
+    test: (b) => b.series === 'Skyward' || b.series === 'Riftwake' || b.id === 'defending-elysium',
+  },
   { id: 'reckoners', label: 'The Reckoners', test: bySeries('The Reckoners') },
   { id: 'legion', label: 'Legion', test: bySeries('Legion') },
   { id: 'alcatraz', label: 'Alcatraz Smedry', test: bySeries('Alcatraz Versus the Evil Librarians') },

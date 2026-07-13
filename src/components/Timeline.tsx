@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Book, UserBookStatus } from '../types';
 import BookNode from './BookNode';
@@ -9,6 +9,7 @@ interface TimelineProps {
   books: Book[];
   selectedBookId: string | null;
   readingOrderEnabled: boolean;
+  vertical: boolean;
   bookStatuses: Record<string, UserBookStatus>;
   onSelectBook: (bookId: string | null) => void;
   onStatusChange: (bookId: string, status: UserBookStatus) => void;
@@ -16,17 +17,39 @@ interface TimelineProps {
 
 const itemSpring = { type: 'spring', stiffness: 380, damping: 32, mass: 0.9 } as const;
 
-function TimelineMarker({ label }: { label: string | number }) {
+/** X-position (px) of the vertical track on mobile: left padding + half node width. */
+const V_TRACK_X = 72;
+
+function getMarkerLabel(book: Book, readingOrderEnabled: boolean): string {
+  if (readingOrderEnabled) return `Part ${book.recommendedOrderSeq}`;
+  return book.tbd ? 'TBD' : String(book.year);
+}
+
+function TimelineMarker({ label, vertical }: { label: string; vertical: boolean }) {
+  const pill = (
+    <span className="font-mono text-[10.5px] font-bold text-ink dark:text-sage bg-cream dark:bg-night border-2 border-mint dark:border-mint/40 px-3 py-1 rounded-full shadow-flat-sm dark:shadow-flat-sm-dark select-none whitespace-nowrap">
+      {label}
+    </span>
+  );
+
+  if (vertical) {
+    return (
+      <div className="relative h-9 w-full flex items-center" style={{ paddingLeft: V_TRACK_X }}>
+        <div
+          className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-coral"
+          style={{ left: V_TRACK_X - 4 }}
+        />
+        <div className="-translate-x-1/2 relative z-20">{pill}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-shrink-0 flex items-center justify-center relative h-full w-24 mr-12">
       {/* Stem, dot on the track, and the label pill above it */}
       <div className="absolute left-1/2 -translate-x-1/2 w-[2px] bg-coral top-1/2 -translate-y-[80px] h-[80px]" />
       <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-coral" />
-      <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-[96px] z-20">
-        <span className="font-mono text-[10.5px] font-bold text-ink bg-cream border-2 border-mint px-3 py-1 rounded-full shadow-flat-sm select-none whitespace-nowrap">
-          {label}
-        </span>
-      </div>
+      <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-[96px] z-20">{pill}</div>
     </div>
   );
 }
@@ -35,6 +58,7 @@ export default function Timeline({
   books,
   selectedBookId,
   readingOrderEnabled,
+  vertical,
   bookStatuses,
   onSelectBook,
   onStatusChange,
@@ -46,12 +70,40 @@ export default function Timeline({
     [onSelectBook, selectedBookId]
   );
 
-  // Keep the selected node (and its detail card) in view. On narrow screens
-  // the node + card block is wider than the viewport, so align the node to
-  // the left edge instead of centering the whole block. The target is
-  // computed from offsetLeft (unaffected by in-flight layout transforms) and
-  // applied with scrollTo, which sibling animations cannot cancel the way
-  // they cancel a smooth scrollIntoView.
+  // On load (and when the visible list changes) start at the most recent
+  // released book, centered and unselected, so the user can scroll forward
+  // to upcoming books or back through the catalog. In reading-order mode
+  // the list starts at Part 1 instead.
+  useLayoutEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+    if (readingOrderEnabled) {
+      container.scrollTo({ left: 0, top: 0, behavior: 'auto' });
+      return;
+    }
+    let latest: Book | undefined;
+    for (const book of books) {
+      if (book.isReleased) latest = book;
+    }
+    if (!latest) {
+      container.scrollTo({ left: 0, top: 0, behavior: 'auto' });
+      return;
+    }
+    const item = container.querySelector<HTMLElement>(`[data-book-id="${CSS.escape(latest.id)}"]`);
+    if (!item) return;
+    if (vertical) {
+      container.scrollTop = item.offsetTop + item.offsetHeight / 2 - container.clientHeight / 2;
+    } else {
+      container.scrollLeft = item.offsetLeft + item.offsetWidth / 2 - container.clientWidth / 2;
+    }
+  }, [books, readingOrderEnabled, vertical, ref]);
+
+  // Keep the selected node (and its detail card) in view. On desktop the
+  // node + card block is centered horizontally; on mobile the node scrolls
+  // to a comfortable vertical position with the card alongside it. Targets
+  // are computed from offsets (unaffected by in-flight layout transforms)
+  // and applied with scrollTo, which sibling animations cannot cancel the
+  // way they cancel a smooth scrollIntoView.
   useEffect(() => {
     if (!selectedBookId) return;
     const container = ref.current;
@@ -61,15 +113,16 @@ export default function Timeline({
         `[data-book-id="${CSS.escape(selectedBookId)}"]`
       );
       if (!item) return;
-      const narrow = window.innerWidth < 640;
-      const node = item.querySelector('button');
-      const left = narrow
-        ? item.offsetLeft + (node?.offsetLeft ?? 0) - 24
-        : item.offsetLeft + item.offsetWidth / 2 - container.clientWidth / 2;
-      container.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+      if (vertical) {
+        const top = item.offsetTop + item.offsetHeight / 2 - container.clientHeight / 2;
+        container.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      } else {
+        const left = item.offsetLeft + item.offsetWidth / 2 - container.clientWidth / 2;
+        container.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+      }
     }, 120);
     return () => window.clearTimeout(timer);
-  }, [selectedBookId, ref]);
+  }, [selectedBookId, vertical, ref]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -83,16 +136,31 @@ export default function Timeline({
     <div
       ref={ref}
       {...handlers}
-      className={`flex-1 min-h-0 w-full overflow-x-auto overflow-y-hidden custom-scrollbar flex items-center relative ${
-        isDragging ? 'cursor-grabbing' : 'cursor-grab'
-      }`}
+      className={`flex-1 min-h-0 w-full custom-scrollbar relative ${
+        vertical
+          ? 'overflow-y-auto overflow-x-hidden'
+          : 'overflow-x-auto overflow-y-hidden flex items-center'
+      } ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
     >
-      <div className="relative flex items-center px-24 md:px-48 h-full min-h-[480px] min-w-max">
-        {/* Horizontal track line */}
-        <div className="absolute left-0 right-0 top-1/2 h-[3px] bg-coral -translate-y-1/2 pointer-events-none" />
+      <div
+        className={
+          vertical
+            ? 'relative flex flex-col w-full min-h-full py-14 gap-6'
+            : 'relative flex items-center px-24 md:px-48 h-full min-h-[480px] min-w-max'
+        }
+      >
+        {/* Track line */}
+        <div
+          className={
+            vertical
+              ? 'absolute top-0 bottom-0 w-[3px] bg-coral pointer-events-none'
+              : 'absolute left-0 right-0 top-1/2 h-[3px] bg-coral -translate-y-1/2 pointer-events-none'
+          }
+          style={vertical ? { left: V_TRACK_X - 1.5 } : undefined}
+        />
 
         {books.length === 0 && (
-          <p className="font-mono text-sm text-slate-500 relative z-10 bg-cream/80 px-4 py-2 rounded-full border border-mint">
+          <p className="font-mono text-sm text-slate-500 dark:text-slate-400 relative z-10 bg-cream/80 dark:bg-night/80 px-4 py-2 rounded-full border border-mint dark:border-mint/40 self-center mx-auto">
             No books match this filter.
           </p>
         )}
@@ -101,10 +169,9 @@ export default function Timeline({
           {books.map((book, index) => {
             const isSelected = selectedBookId === book.id;
             const previous = books[index - 1];
-            const showMarker = readingOrderEnabled
-              ? index === 0 || book.recommendedOrderSeq !== previous?.recommendedOrderSeq
-              : index === 0 || book.year !== previous?.year;
-            const markerLabel = readingOrderEnabled ? `Part ${book.recommendedOrderSeq}` : book.year;
+            const markerLabel = getMarkerLabel(book, readingOrderEnabled);
+            const showMarker =
+              index === 0 || markerLabel !== getMarkerLabel(previous, readingOrderEnabled);
 
             return (
               <motion.div
@@ -115,42 +182,52 @@ export default function Timeline({
                 exit={{ opacity: 0, scale: 0.85 }}
                 transition={itemSpring}
                 data-book-id={book.id}
-                className={`flex items-center flex-shrink-0 h-full mr-12 last:mr-0 relative ${
-                  isSelected ? 'z-20' : 'z-10'
-                }`}
+                className={`flex-shrink-0 relative ${
+                  vertical
+                    ? 'flex flex-col w-full'
+                    : 'flex items-center h-full mr-12 last:mr-0'
+                } ${isSelected ? 'z-20' : 'z-10'}`}
               >
-                {showMarker && <TimelineMarker label={markerLabel} />}
+                {showMarker && <TimelineMarker label={markerLabel} vertical={vertical} />}
 
-                <BookNode
-                  book={book}
-                  isSelected={isSelected}
-                  readingOrderEnabled={readingOrderEnabled}
-                  userStatus={bookStatuses[book.id]}
-                  onSelect={handleNodeSelect}
-                />
+                <div className={vertical ? 'flex items-center w-full pl-4 pr-3 py-2' : 'contents'}>
+                  <BookNode
+                    book={book}
+                    isSelected={isSelected}
+                    readingOrderEnabled={readingOrderEnabled}
+                    userStatus={bookStatuses[book.id]}
+                    onSelect={handleNodeSelect}
+                  />
 
-                <AnimatePresence>
-                  {isSelected && (
-                    <motion.div
-                      key="detail"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="flex items-center flex-shrink-0 relative z-20"
-                    >
-                      {/* Connector from node to card */}
-                      <div className="w-8 h-[3px] bg-coral flex-shrink-0 flex items-center justify-center">
-                        <div className="w-2.5 h-2.5 rounded-full bg-mint border-2 border-ink" />
-                      </div>
-                      <BookDetailCard
-                        book={book}
-                        userStatus={bookStatuses[book.id]}
-                        onStatusChange={(status) => onStatusChange(book.id, status)}
-                        onClose={() => onSelectBook(null)}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                  <AnimatePresence>
+                    {isSelected && (
+                      <motion.div
+                        key="detail"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className={`flex items-center relative z-20 ${
+                          vertical ? 'flex-1 min-w-0' : 'flex-shrink-0'
+                        }`}
+                      >
+                        {/* Connector from node to card */}
+                        <div
+                          className={`h-[3px] bg-coral flex-shrink-0 flex items-center justify-center ${
+                            vertical ? 'w-4' : 'w-8'
+                          }`}
+                        >
+                          <div className="w-2.5 h-2.5 rounded-full bg-mint border-2 border-ink dark:border-sage" />
+                        </div>
+                        <BookDetailCard
+                          book={book}
+                          userStatus={bookStatuses[book.id]}
+                          onStatusChange={(status) => onStatusChange(book.id, status)}
+                          onClose={() => onSelectBook(null)}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </motion.div>
             );
           })}

@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 @layer utilities {
-  /* Themed scrollbar used by the timeline and other horizontal scrollers.
+  /* Themed scrollbar used by the timeline and other scrollers.
      scrollbar-width/color are only applied where ::-webkit-scrollbar is
      unsupported (Firefox); in Chromium they would disable the webkit styling. */
   @supports not selector(::-webkit-scrollbar) {
     .custom-scrollbar {
       scrollbar-width: thin;
       scrollbar-color: #C0E1D2 rgba(229, 238, 228, 0.4);
+    }
+    .dark .custom-scrollbar {
+      scrollbar-color: #4A6B5D rgba(24, 31, 36, 0.6);
     }
   }
   .custom-scrollbar::-webkit-scrollbar {
@@ -30,6 +33,17 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #DC9B9B;
   }
+  .dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(34, 43, 49, 0.6);
+    border-color: rgba(192, 225, 210, 0.15);
+  }
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #4A6B5D;
+    border-color: rgba(0, 0, 0, 0.4);
+  }
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #DC9B9B;
+  }
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -43,4 +57,9 @@
 body {
   font-family: 'Inter', sans-serif;
   background-color: #F6F4E8;
+}
+
+.dark body {
+  background-color: #181F24;
+  color-scheme: dark;
 }

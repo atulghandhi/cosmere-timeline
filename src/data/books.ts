@@ -1532,8 +1532,8 @@ export const books: Book[] = [
     author: "Brandon Sanderson",
     series: "Standalone",
     year: 2025,
-    description: "A short fiction collection gathering his sci-fi and fantasy tales, some tied to known worlds.",
-    isReleased: false,
+    description: "A non-Cosmere collection of ten short fiction works spanning sci-fi and fantasy — including Snapshot, Perfect State, Defending Elysium, Firstborn, and Mitosis — plus the brand-new ~200-page novella Moment Zero. Released December 2025.",
+    isReleased: true,
     cosmere: false,
     lengthType: "Anthology",
     links: {
@@ -1547,9 +1547,9 @@ export const books: Book[] = [
     title: "Elsecaller",
     author: "Brandon Sanderson",
     series: "The Stormlight Archive",
-    year: 2025,
-    description: "An announced upcoming Stormlight Archive side story; plot details are still under wraps.",
-    isReleased: false,
+    year: 2024,
+    description: "A Stormlight side story featuring Jasnah, co-written with Dan Wells. First released as a Stormlight Lost Tales Story Deck at Dragonsteel Nexus 2024, with a print double-feature hardcover following in December 2025.",
+    isReleased: true,
     cosmere: true,
     lengthType: "Short Story",
     links: {
@@ -1563,9 +1563,9 @@ export const books: Book[] = [
     title: "King Lopen the First of Alethkar",
     author: "Brandon Sanderson",
     series: "The Stormlight Archive",
-    year: 2025,
-    description: "An announced upcoming Stormlight Archive side story centered on the Lopen; details are still under wraps.",
-    isReleased: false,
+    year: 2024,
+    description: "A Stormlight side story about Elhokar and the Lopen, co-written with Isaac Stewart. First released as a Stormlight Lost Tales Story Deck at Dragonsteel Nexus 2024, then in print in December 2025.",
+    isReleased: true,
     cosmere: true,
     lengthType: "Short Story",
     links: {
@@ -1579,9 +1579,9 @@ export const books: Book[] = [
     title: "The ChasmFriends Get A Pet!",
     author: "Brandon Sanderson",
     series: "The Stormlight Archive",
-    year: 2025,
-    description: "An announced upcoming lighthearted Stormlight Archive side story; details are still under wraps.",
-    isReleased: false,
+    year: 2024,
+    description: "A humorous, non-canonical Stormlight tale about friendship and a runaway pet shoutie, co-written with Dan Wells. First released as a Stormlight Lost Tales Story Deck at Dragonsteel Nexus 2024; also part of the upcoming Hoid's Storybook Collection.",
+    isReleased: true,
     cosmere: true,
     lengthType: "Short Story",
     links: {
@@ -1596,7 +1596,7 @@ export const books: Book[] = [
     author: "Brandon Sanderson",
     series: "Hoid's Travails",
     year: 2026,
-    description: "An upcoming Cosmere novel told in Hoid's voice, planned as a commercial release in late 2026.",
+    description: "Hoid's tale of December, a young woman in a forgotten land sustained by rivers of demon blood, who sails up the River Violet to warn the king's court of a coming plague. Premium edition crowdfunded in 2026; wide release expected around Christmas 2026.",
     isReleased: false,
     cosmere: true,
     lengthType: "Novel",
@@ -1610,7 +1610,7 @@ export const books: Book[] = [
     author: "Brandon Sanderson",
     series: "Hoid's Storybook Collection",
     year: 2026,
-    description: "A Hoid's Storybook picture book adapting an in-world tale, illustrated by Howard Lyon.",
+    description: "An illustrated picture-book edition of the in-world tale Hoid tells in Oathbringer, illustrated by Howard Lyon. Part of the Hoid's Storybook Collection BackerKit campaign (March 2026), shipping late 2026.",
     isReleased: false,
     cosmere: true,
     lengthType: "Picture Book",
@@ -1624,7 +1624,7 @@ export const books: Book[] = [
     author: "Brandon Sanderson",
     series: "Hoid's Storybook Collection",
     year: 2026,
-    description: "A Hoid's Storybook picture book adapting the in-world story of Wandersail.",
+    description: "An illustrated picture-book edition of the in-world story of the ship Wandersail from The Way of Kings, illustrated by Howard Lyon. Part of the Hoid's Storybook Collection BackerKit campaign (March 2026), shipping late 2026.",
     isReleased: false,
     cosmere: true,
     lengthType: "Picture Book",
@@ -1638,10 +1638,222 @@ export const books: Book[] = [
     author: "Brandon Sanderson",
     series: "Hoid's Storybook Collection",
     year: 2026,
-    description: "A Hoid's Storybook picture book of an in-world tale, illustrated by Howard Lyon.",
+    description: "An illustrated picture-book edition of the in-world fable Hoid tells Kaladin in Words of Radiance, illustrated by Howard Lyon. Part of the Hoid's Storybook Collection BackerKit campaign (March 2026), shipping late 2026.",
     isReleased: false,
     cosmere: true,
     lengthType: "Picture Book",
     links: {}
+  },
+  {
+    id: "horneater",
+    title: "Horneater",
+    author: "Brandon Sanderson",
+    series: "The Stormlight Archive",
+    year: 2026,
+    description: "An upcoming Stormlight novella following Rock (Lunamor) as he returns to his homeland in the Horneater Peaks, set between Rhythm of War and Wind and Truth. A premium illustrated edition is part of the 2026 Hoid's Storybook Collection campaign, expected around Dragonsteel Nexus 2026.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novella",
+    links: {
+      goodreads: "https://www.goodreads.com/search?q=Horneater%20Brandon%20Sanderson",
+      coppermind: "https://coppermind.net/wiki/Horneater"
+    }
+  },
+  {
+    id: "blightfall",
+    title: "Blightfall",
+    author: "Brandon Sanderson",
+    series: "Riftwake",
+    year: 2026,
+    description: "The first book of Riftwake, a new Cytoverse trilogy co-written with Janci Patterson that follows on from the Skyward saga. Scheduled for release on September 1, 2026.",
+    isReleased: false,
+    cosmere: false,
+    lengthType: "Novel",
+    seriesNumber: 1,
+    subSeries: "Cytoverse",
+    links: {
+      amazon: "https://www.amazon.com/s?k=Blightfall%20Brandon%20Sanderson",
+      goodreads: "https://www.goodreads.com/search?q=Blightfall%20Brandon%20Sanderson",
+      coppermind: "https://coppermind.net/wiki/Blightfall"
+    }
+  },
+  {
+    id: "riftwake-2",
+    title: "Riftwake Book Two (Untitled)",
+    author: "Brandon Sanderson",
+    series: "Riftwake",
+    year: 2027,
+    tbd: true,
+    description: "The announced second entry in the Riftwake trilogy, co-written with Janci Patterson. Only the series is known so far — title and release date have not been announced.",
+    isReleased: false,
+    cosmere: false,
+    lengthType: "Novel",
+    seriesNumber: 2,
+    subSeries: "Cytoverse",
+    links: {
+      coppermind: "https://coppermind.net/wiki/Cytoverse"
+    }
+  },
+  {
+    id: "riftwake-3",
+    title: "Riftwake Book Three (Untitled)",
+    author: "Brandon Sanderson",
+    series: "Riftwake",
+    year: 2028,
+    tbd: true,
+    description: "The announced third entry in the Riftwake trilogy, co-written with Janci Patterson. Only the series is known so far — title and release date have not been announced.",
+    isReleased: false,
+    cosmere: false,
+    lengthType: "Novel",
+    seriesNumber: 3,
+    subSeries: "Cytoverse",
+    links: {
+      coppermind: "https://coppermind.net/wiki/Cytoverse"
+    }
+  },
+  {
+    id: "ghostbloods-1",
+    title: "Mistborn: Ghostbloods Book One (Untitled)",
+    author: "Brandon Sanderson",
+    series: "Mistborn",
+    year: 2028,
+    tbd: true,
+    description: "The first book of the Mistborn Era 3 trilogy, set on a 1980s-era Scadrial locked in a Cold War. Sanderson's main novel focus after Wind and Truth, with a tentative release around 2028. Title not yet announced.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    seriesNumber: 1,
+    subSeries: "Era 3 · Ghostbloods",
+    links: {
+      coppermind: "https://coppermind.net/wiki/Ghostbloods_(trilogy)"
+    }
+  },
+  {
+    id: "ghostbloods-2",
+    title: "Mistborn: Ghostbloods Book Two (Untitled)",
+    author: "Brandon Sanderson",
+    series: "Mistborn",
+    year: 2029,
+    tbd: true,
+    description: "The second book of the Mistborn Era 3 (Ghostbloods) trilogy. Planned to follow Book One at roughly yearly intervals; title and date not yet announced.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    seriesNumber: 2,
+    subSeries: "Era 3 · Ghostbloods",
+    links: {
+      coppermind: "https://coppermind.net/wiki/Ghostbloods_(trilogy)"
+    }
+  },
+  {
+    id: "ghostbloods-3",
+    title: "Mistborn: Ghostbloods Book Three (Untitled)",
+    author: "Brandon Sanderson",
+    series: "Mistborn",
+    year: 2030,
+    tbd: true,
+    description: "The concluding book of the Mistborn Era 3 (Ghostbloods) trilogy. Planned to complete the trilogy before Sanderson returns to the Stormlight Archive; title and date not yet announced.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    seriesNumber: 3,
+    subSeries: "Era 3 · Ghostbloods",
+    links: {
+      coppermind: "https://coppermind.net/wiki/Ghostbloods_(trilogy)"
+    }
+  },
+  {
+    id: "stormlight-6",
+    title: "The Stormlight Archive Book 6 (Untitled)",
+    author: "Brandon Sanderson",
+    series: "The Stormlight Archive",
+    year: 2031,
+    tbd: true,
+    description: "The opening volume of the back half of the Stormlight Archive, planned to feature Lift's flashbacks. Sanderson has said it will be written after the Mistborn: Ghostbloods trilogy — no title or date yet.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    seriesNumber: 6,
+    links: {
+      coppermind: "https://coppermind.net/wiki/The_Stormlight_Archive"
+    }
+  },
+  {
+    id: "elantris-sequel-1",
+    title: "Elantris Sequel One (Untitled)",
+    author: "Brandon Sanderson",
+    series: "Elantris",
+    year: 2032,
+    tbd: true,
+    description: "The first of two long-announced Elantris sequels returning to the world of Sel. Sanderson has confirmed they are planned, but nothing beyond the intent is known — no title or timeline yet.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    seriesNumber: 2,
+    links: {
+      coppermind: "https://coppermind.net/wiki/Elantris_(series)"
+    }
+  },
+  {
+    id: "elantris-sequel-2",
+    title: "Elantris Sequel Two (Untitled)",
+    author: "Brandon Sanderson",
+    series: "Elantris",
+    year: 2033,
+    tbd: true,
+    description: "The second announced Elantris sequel, concluding the planned Sel trilogy. Only the intent to write it is known — no title or timeline yet.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    seriesNumber: 3,
+    links: {
+      coppermind: "https://coppermind.net/wiki/Elantris_(series)"
+    }
+  },
+  {
+    id: "the-aztlanian",
+    title: "The Aztlanian",
+    author: "Brandon Sanderson",
+    series: "The Rithmatist",
+    year: 2034,
+    tbd: true,
+    description: "The long-promised sequel to The Rithmatist. Sanderson has repeatedly said he still intends to write it, but it has been delayed for years and currently has no timeline — only the title is known.",
+    isReleased: false,
+    cosmere: false,
+    lengthType: "Novel",
+    seriesNumber: 2,
+    links: {
+      coppermind: "https://coppermind.net/wiki/The_Aztlanian"
+    }
+  },
+  {
+    id: "the-night-brigade",
+    title: "The Night Brigade",
+    author: "Brandon Sanderson",
+    series: "Standalone",
+    year: 2034,
+    tbd: true,
+    description: "A planned Cosmere novel set on Threnody, the haunted world of Shadows for Silence in the Forests of Hell. Only the title and setting are known — no timeline has been announced.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    links: {
+      coppermind: "https://coppermind.net/wiki/The_Night_Brigade"
+    }
+  },
+  {
+    id: "white-sand-prose-novel",
+    title: "White Sand (Prose Novel)",
+    author: "Brandon Sanderson",
+    series: "White Sand",
+    year: 2035,
+    tbd: true,
+    description: "Sanderson has expressed the intent to eventually rewrite White Sand as a prose novel, replacing the graphic novel adaptation as canon. Nothing beyond the stated intent is known — no title, form, or timeline confirmed.",
+    isReleased: false,
+    cosmere: true,
+    lengthType: "Novel",
+    links: {
+      coppermind: "https://coppermind.net/wiki/White_Sand"
+    }
   }
 ];

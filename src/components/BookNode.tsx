@@ -13,18 +13,28 @@ interface BookNodeProps {
 
 function getNodeColors(isSelected: boolean, isReleased: boolean, userStatus?: UserBookStatus) {
   if (isSelected) {
-    return { surface: 'bg-coral border-ink', title: 'text-ink', meta: 'text-ink/70' };
+    return { surface: 'bg-coral border-ink dark:border-sage', title: 'text-ink', meta: 'text-ink/70' };
   }
   if (userStatus === 'read') {
-    return { surface: 'bg-mint border-ink/40 hover:border-coral', title: 'text-ink', meta: 'text-slate-600' };
+    return {
+      surface: 'bg-mint dark:bg-mint/80 border-ink/40 hover:border-coral',
+      title: 'text-ink',
+      meta: 'text-slate-600',
+    };
   }
   if (userStatus === 'tbr') {
-    return { surface: 'bg-ink border-ink hover:border-coral', title: 'text-sage', meta: 'text-slate-300' };
+    return {
+      surface: 'bg-ink dark:bg-black/50 border-ink dark:border-mint/50 hover:border-coral dark:hover:border-coral',
+      title: 'text-sage',
+      meta: 'text-slate-300',
+    };
   }
   return {
-    surface: `${isReleased ? 'bg-sage' : 'bg-cream/60'} border-mint hover:border-coral`,
-    title: 'text-ink',
-    meta: 'text-slate-600',
+    surface: `${
+      isReleased ? 'bg-sage dark:bg-night' : 'bg-cream/60 dark:bg-abyss/60'
+    } border-mint dark:border-mint/40 hover:border-coral dark:hover:border-coral`,
+    title: 'text-ink dark:text-sage',
+    meta: 'text-slate-600 dark:text-slate-400',
   };
 }
 
@@ -35,20 +45,20 @@ function BookNode({ book, isSelected, readingOrderEnabled, userStatus, onSelect 
     <motion.button
       type="button"
       aria-pressed={isSelected}
-      aria-label={`${book.title} (${book.year})`}
+      aria-label={`${book.title} (${book.tbd ? 'TBD' : book.year})`}
       animate={{ scale: isSelected ? 1.06 : 1 }}
-      whileHover={{ scale: isSelected ? 1.08 : 1.08 }}
+      whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.96 }}
       transition={{ type: 'spring', stiffness: 400, damping: 26 }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect(book.id);
       }}
-      className={`relative flex-shrink-0 w-36 h-36 scroll-ml-6 rounded-full border-2 ${
+      className={`relative flex-shrink-0 w-28 h-28 md:w-36 md:h-36 scroll-ml-6 rounded-full border-2 ${
         book.isReleased ? 'border-solid' : 'border-dashed'
-      } flex flex-col justify-center items-center text-center p-4 cursor-pointer select-none ${colors.surface} ${
+      } flex flex-col justify-center items-center text-center p-3 md:p-4 cursor-pointer select-none ${colors.surface} ${
         !book.isReleased && !isSelected ? 'opacity-80' : ''
-      } ${isSelected ? 'shadow-flat z-20' : 'shadow-sm'}`}
+      } ${isSelected ? 'shadow-flat dark:shadow-flat-dark z-20' : 'shadow-sm'}`}
     >
       {(userStatus === 'read' || userStatus === 'tbr') && (
         <span
@@ -64,17 +74,17 @@ function BookNode({ book, isSelected, readingOrderEnabled, userStatus, onSelect 
       )}
 
       {readingOrderEnabled && book.recommendedOrderSeq != null && (
-        <span className="absolute -top-1 -right-1 bg-coral text-ink border-2 border-ink rounded-full w-6 h-6 flex items-center justify-center font-mono font-bold text-[10px] shadow-sm">
+        <span className="absolute -top-1 -right-1 bg-coral text-ink border-2 border-ink dark:border-sage rounded-full w-6 h-6 flex items-center justify-center font-mono font-bold text-[10px] shadow-sm">
           {book.recommendedOrderSeq}
         </span>
       )}
 
-      <h4 className={`font-display font-bold text-[11px] leading-tight tracking-tight px-1 line-clamp-3 ${colors.title}`}>
+      <h4 className={`font-display font-bold text-[10px] md:text-[11px] leading-tight tracking-tight px-1 line-clamp-3 ${colors.title}`}>
         {book.title}
       </h4>
 
       <div className="mt-1 text-[8.5px] font-mono leading-none flex flex-col items-center">
-        <span className={`italic font-medium truncate max-w-[100px] ${colors.meta}`}>
+        <span className={`italic font-medium truncate max-w-[84px] md:max-w-[100px] ${colors.meta}`}>
           {book.series}
         </span>
         {book.goodreadsRating != null && (
