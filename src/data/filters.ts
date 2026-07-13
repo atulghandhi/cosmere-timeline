@@ -45,6 +45,26 @@ export const SERIES_FILTERS: SeriesFilter[] = [
   { id: 'standalone', label: 'Standalones', test: bySeries('Standalone') },
 ];
 
+/**
+ * Arcs for the recommended reading path. Consecutive books in the same arc
+ * share one timeline marker, so the guided path reads as a handful of legs
+ * instead of a marker per book.
+ */
+const READING_ARCS: { from: number; to: number; name: string }[] = [
+  { from: 1, to: 3, name: 'Mistborn Era 1' },
+  { from: 4, to: 6, name: 'Stormlight Begins' },
+  { from: 7, to: 8, name: 'Cosmere Standalones' },
+  { from: 9, to: 12, name: 'Stormlight Deepens' },
+  { from: 13, to: 16, name: 'Mistborn Era 2' },
+  { from: 17, to: 21, name: 'Secret Projects & Beyond' },
+];
+
+export function getReadingArc(seq: number | undefined): string {
+  if (seq == null) return '';
+  const arc = READING_ARCS.find((a) => seq >= a.from && seq <= a.to);
+  return arc ? arc.name : `Part ${seq}`;
+}
+
 export function filterBooks(books: Book[], filterId: string, readingOrder: boolean): Book[] {
   const filter = SERIES_FILTERS.find((f) => f.id === filterId) ?? SERIES_FILTERS[0];
   const result = books.filter(filter.test);

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { SlidersHorizontal, X, Moon, Sun, BookOpen } from 'lucide-react';
+import { SlidersHorizontal, X, Moon, Sun, BookOpen, Github } from 'lucide-react';
 import { SERIES_FILTERS } from '../data/filters';
+import { GITHUB_URL } from './Header';
 
 interface MobileControlsProps {
   currentFilter: string;
@@ -124,6 +125,15 @@ export default function MobileControls({
                   );
                 })}
               </div>
+
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-3 py-2 border-2 rounded-xl text-xs font-medium bg-sage text-ink border-mint dark:bg-abyss dark:text-sage dark:border-mint/40 transition-colors"
+              >
+                <Github className="w-3.5 h-3.5" /> View source on GitHub
+              </a>
 
               <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-mint/40 dark:border-mint/20 text-[10px] text-slate-500 dark:text-slate-400">
                 <span className="flex items-center gap-1.5">

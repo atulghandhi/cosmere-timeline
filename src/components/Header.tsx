@@ -1,6 +1,8 @@
 import { motion } from 'motion/react';
-import { Sword, BookOpen, Compass, Moon, Sun } from 'lucide-react';
+import { Sword, BookOpen, Compass, Moon, Sun, Github } from 'lucide-react';
 import { SERIES_FILTERS } from '../data/filters';
+
+export const GITHUB_URL = 'https://github.com/atulghandhi/cosmere-timeline';
 
 interface HeaderProps {
   currentFilter: string;
@@ -34,18 +36,31 @@ export default function Header({
           <div>
             <h1 className="font-display font-medium text-lg sm:text-2xl tracking-tight text-ink dark:text-cream flex flex-wrap items-center gap-2">
               Cosmere & Beyond
+              <span className="sr-only">— Brandon Sanderson Book Release Timeline</span>
               <span className="hidden sm:inline text-[10px] sm:text-xs font-mono font-medium px-2 py-0.5 bg-coral/20 border border-coral/55 rounded-md text-ink/90 dark:text-sage/90">
                 Sanderson Universe
               </span>
             </h1>
             <p className="text-slate-600 dark:text-slate-400 text-[10px] sm:text-xs mt-0.5">
-              Interactive timeline of releases, future works, and recommended reading paths.
+              Every Brandon Sanderson book — release timeline, reading order, and upcoming works.
             </p>
           </div>
         </div>
 
-        {/* Desktop controls: theme, reading order, count */}
+        {/* Desktop controls: GitHub, theme, reading order, count */}
         <div className="hidden md:flex items-center gap-2.5 w-auto justify-end">
+          <motion.a
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View source on GitHub"
+            className="flex items-center justify-center w-10 h-10 border-2 rounded-xl bg-sage hover:bg-mint border-mint dark:bg-night dark:hover:bg-mint/20 dark:border-mint/40 text-ink dark:text-sage transition-colors cursor-pointer"
+          >
+            <Github className="w-4 h-4" />
+          </motion.a>
+
           <motion.button
             type="button"
             whileHover={{ scale: 1.05 }}

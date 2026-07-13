@@ -4,6 +4,7 @@ import { Book, UserBookStatus } from '../types';
 import BookNode from './BookNode';
 import BookDetailCard from './BookDetailCard';
 import { useDragScroll } from '../hooks/useDragScroll';
+import { getReadingArc } from '../data/filters';
 
 interface TimelineProps {
   books: Book[];
@@ -21,7 +22,7 @@ const itemSpring = { type: 'spring', stiffness: 380, damping: 32, mass: 0.9 } as
 const V_TRACK_X = 72;
 
 function getMarkerLabel(book: Book, readingOrderEnabled: boolean): string {
-  if (readingOrderEnabled) return `Part ${book.recommendedOrderSeq}`;
+  if (readingOrderEnabled) return getReadingArc(book.recommendedOrderSeq);
   return book.tbd ? 'TBD' : String(book.year);
 }
 
@@ -124,13 +125,53 @@ export default function Timeline({
     return () => window.clearTimeout(timer);
   }, [selectedBookId, vertical, ref]);
 
+  // Keyboard navigation: arrows step between books (starting from the one
+  // nearest the viewport center when nothing is selected), Escape closes.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onSelectBook(null);
+      if (e.key === 'Escape') {
+        onSelectBook(null);
+        return;
+      }
+      const forward = e.key === 'ArrowRight' || e.key === 'ArrowDown';
+      const backward = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
+      if ((!forward && !backward) || books.length === 0) return;
+      e.preventDefault();
+
+      let index = selectedBookId ? books.findIndex((b) => b.id === selectedBookId) : -1;
+      if (index === -1) {
+        // Start from the book closest to the middle of the viewport.
+        const container = ref.current;
+        if (container) {
+          const mid = vertical
+            ? container.scrollTop + container.clientHeight / 2
+            : container.scrollLeft + container.clientWidth / 2;
+          let best = Infinity;
+          books.forEach((book, i) => {
+            const item = container.querySelector<HTMLElement>(
+              `[data-book-id="${CSS.escape(book.id)}"]`
+            );
+            if (!item) return;
+            const center = vertical
+              ? item.offsetTop + item.offsetHeight / 2
+              : item.offsetLeft + item.offsetWidth / 2;
+            const dist = Math.abs(center - mid);
+            if (dist < best) {
+              best = dist;
+              index = i;
+            }
+          });
+        }
+        if (index === -1) index = 0;
+        onSelectBook(books[index].id);
+        return;
+      }
+      const next = Math.min(books.length - 1, Math.max(0, index + (forward ? 1 : -1)));
+      if (next !== index) onSelectBook(books[next].id);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onSelectBook]);
+  }, [onSelectBook, selectedBookId, books, vertical, ref]);
 
   return (
     <div
