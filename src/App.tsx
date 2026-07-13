@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import Header from './components/Header';
 import Timeline from './components/Timeline';
 import MobileControls from './components/MobileControls';
@@ -89,6 +90,7 @@ export default function App() {
           onStatusChange={setStatus}
         />
       </main>
+      <Analytics />
     </div>
   );
 }
