@@ -40,3 +40,11 @@ npm run lint
 
 Book data lives in `src/data/books.ts`; series filters and the reading-path arcs in
 `src/data/filters.ts`.
+
+## License
+
+The code in this repository is released under the [MIT License](LICENSE).
+
+The Cosmere, its books, characters and related names are the property of Brandon
+Sanderson and Dragonsteel Entertainment. This is an unofficial fan project and is
+not affiliated with or endorsed by them.
